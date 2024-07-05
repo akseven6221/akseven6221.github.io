@@ -1,0 +1,94 @@
+---
+title: lec2 Types and advanced stream
+# author: alioth
+date: 2024-07-05 22:34:23 +0800
+categories: [csdiy, cs106L]
+tags: [c++]
+description: none
+---
+### lec2 Types and Advanced stream
+
+#### continue stream
+
+- key Takeways
+  - When does the program prompt the user for input?
+    - when buffer is empty and using cin
+  - Why does the cout operation not immediately print the output onto the console? when is the output printed?
+    - it print until meet the wihte character
+  - Does the position pointer skip whitespace before the token or after the token with each >> operation?(this is important)
+    - skip whitespace before the token instead of skip whitespace after the token
+
+- 3 reson why >> with cin is a nightmare
+  - cin: if you type in a full line, it puts a full line into the buffer. but when you try extracting stuff, it only extracts token by token
+  - trash in the buffer will make cin not prompt the user for input at the right time
+  - when cin fails, all future cin operations fail too
+  
+- getline() read the line until '\n' and consume '\n'
+  - getline() 的错误例子，不应该将getline和cin混用，除非你非常懂。
+    ```c++
+    isstringstream iss("16.9\n 24");
+    double val;
+    string line;
+    iss >> val;
+    iss.ignore();       // 解决方案
+    // getline(iss, line); // lint = ""   getline得到的是空串
+    getline(iss, line); // line = " 24"
+    ```
+
+#### modern c++ types
+
+- Ever get this annoying warning message about unsigned integers
+  - size_t
+    ```c++
+    string str = "hello world!";
+    // size_t almost 9 bits(unless old machine(32bit machine))
+    for (size_t i = 0; i < str.size(); ++i) {
+        cout << str[i] << endl;
+    }
+    ```
+- a easy bug: if we put a empty string, str.size() - 1 will be a huge number, then crash
+  ```c++
+  string chopBothEnds(const string& str) {
+      string result = "";
+      for (size_t i = 1; i < str.size() - 1; ++i) {
+          result += str[i];
+      }
+      return result;
+  }
+  ```
+
+- using: deal with collection
+  - make there gigantic name more short
+  - when to use type aliases?
+    - when a type name is too long and a simpler alias makes the code more readable
+    - In libraries there is a common name for a type within each class.Example:
+      - vector::iterator, map::iterator, string::iterator
+
+- auto
+  - discard const, &. It means you have to explict use auto and & if you need it
+  - must use in lambda function
+  - can not use auto for parameters
+  - when to use auto?
+    - when you don't care what the ytype is(iterators)
+    - when its type is clear from context(templates)
+    - when you don't kown what the type is(lambda)
+    - don't use it unnecessarily for return types
+
+- pair/tuple function
+    ```c++
+    // make_pair/tuple automatically deduces the type
+    auto prices = make_pair(3.4, 5); // pair<double, int>
+    auto values = make_tuple(3, 4, "hi"); // tuple<int, int, char*>
+
+    // access via get/set
+    prices.first = prices.second;       // prices = {5.0, 5}
+    get<0>(values) = get<1>(values);    // values = {4, 4, "hi"}
+
+    // structured binding -extract each component
+    auto [a, b] = prices;               // a, b are copies of 5.0 and 5
+    const auto& [x, y, z] = values;     // x, y, z are const references to 4 4 "hi"
+    ```
+  - std::pair is a template
+    
+- and there is reference guideline:
+![Desktop View](/_posts/cs106L/asset/lec2_ref_.png){: width="972" height="589" }
