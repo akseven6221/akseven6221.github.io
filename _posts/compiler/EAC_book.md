@@ -2,9 +2,9 @@
 title: EAC book
 # author: alioth
 date: 2025-01-01 10:34:23 +0800
-categories: ["Compiler", EAC]
+categories: [Compiler, EAC]
 tags: [compiler]
-description: _
+description: compiler
 ---
 
 # Overview of Compilation
