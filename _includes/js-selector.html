@@ -66,9 +66,17 @@
 
 {% if page.math %}
   <!-- MathJax -->
-  <script src="{{ '/assets/js/data/mathjax.js' | relative_url }}"></script>
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async src="{{ site.data.origin[type].mathjax.js | relative_url }}"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        tags: 'ams'
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://unpkg.com/mathjax@3.2.2/es5/tex-chtml.js"></script>
 {% endif %}
 
 <!-- Pageviews -->
