@@ -1,7 +1,7 @@
 ---
 title: weekly_post
 # author: alioth
-date: 2026-05-09 17:00:00 +0800
+date: 2026-05-09 00:00:00 +0800
 categories: [daliy, post]
 tags: [notes]
 description: none
